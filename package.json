@@ -11,7 +11,8 @@
     "load:constitucion": "tsx scripts/loadConstitucion.ts load",
     "embed:constitucion": "tsx scripts/embedConstitucion.ts embed",
     "test:retrieval": "tsx scripts/testRetrieval.ts",
-    "debug:retrieval": "tsx scripts/debugRetrieval.ts"
+    "debug:retrieval": "tsx scripts/debugRetrieval.ts",
+    "test:analysis": "tsx scripts/testAnalysis.ts"
   },
   "dependencies": {
     "@langchain/openai": "^1.4.5",
