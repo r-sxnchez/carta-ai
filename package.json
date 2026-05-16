@@ -6,16 +6,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "analyze:constitucion": "tsx scripts/loadConstitucion.ts analyze",
+    "load:constitucion": "tsx scripts/loadConstitucion.ts load",
+    "embed:constitucion": "tsx scripts/embedConstitucion.ts embed",
+    "test:retrieval": "tsx scripts/testRetrieval.ts",
+    "debug:retrieval": "tsx scripts/debugRetrieval.ts"
   },
   "dependencies": {
+    "@langchain/openai": "^1.4.5",
     "@supabase/supabase-js": "^2.105.4",
     "axios": "^1.16.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "gray-matter": "^4.0.3",
+    "langchain": "^1.4.0",
     "lucide-react": "^1.16.0",
     "next": "^16.2.6",
     "openai": "^6.38.0",
+    "pdf-parse": "^2.4.5",
     "radix-ui": "^1.4.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -33,6 +43,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
+    "tsx": "^4.22.0",
     "typescript": "^5"
   }
 }
