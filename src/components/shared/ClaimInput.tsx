@@ -5,7 +5,7 @@ import { Send, Loader2 } from "lucide-react";
 import { MAX_CLAIM_LENGTH } from "@/lib/constants";
 
 const EXAMPLES = [
-  "El gobierno puede cambiar la Constitucion sin aprobacion del Congreso.",
+  "El gobierno puede cambiar la Constitución sin aprobación del Congreso.",
   "El presidente puede disolver el Congreso por decreto.",
   "Los alcaldes pueden ignorar sentencias de la Corte.",
 ];
@@ -27,10 +27,10 @@ export function ClaimInput({ onSubmit, isLoading }: ClaimInputProps) {
   return (
     <div className="border-t-4 border-primary bg-card p-5 sm:p-8">
       <label htmlFor="claim-input" className="block font-serif text-xl font-bold text-foreground">
-        Pega una afirmacion politica
+        Pega una afirmación política
       </label>
       <p className="mt-2 text-sm text-muted-foreground">
-        Mensaje de WhatsApp, tweet, propuesta de gobierno, o cualquier texto que quieras verificar.
+        Mensaje de WhatsApp, tweet, propuesta de gobierno o cualquier texto que quieras verificar.
       </p>
 
       <textarea
@@ -49,7 +49,7 @@ export function ClaimInput({ onSubmit, isLoading }: ClaimInputProps) {
       {!claim && (
         <div className="mt-5">
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            Prueba con:
+            Prueba con
           </span>
           <div className="mt-3 flex flex-wrap gap-2">
             {EXAMPLES.map((example) => (

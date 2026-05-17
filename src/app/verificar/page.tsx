@@ -31,7 +31,7 @@ export default function VerificarPage() {
         body: JSON.stringify({ claim }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "El analisis fallo.");
+      if (!res.ok) throw new Error(data.error ?? "El análisis falló.");
       setResult(data as AnalysisResult);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado.");
@@ -85,14 +85,14 @@ export default function VerificarPage() {
         {!hasSubmitted && (
           <div className="mb-8">
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-              Verificacion constitucional
+              Verificación constitucional
             </p>
             <h1 className="mt-2 font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Que te dijeron ahora?
+              ¿Qué te dijeron ahora?
             </h1>
             <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-              Pega el mensaje, tweet, o noticia que quieres verificar.
-              Te decimos si tiene sustento en la Constitucion.
+              Pega el mensaje, tweet o noticia que quieras verificar.
+              Te mostramos si tiene sustento en la Constitución.
             </p>
           </div>
         )}
@@ -104,7 +104,7 @@ export default function VerificarPage() {
           >
             <MessageCircle className="h-5 w-5 shrink-0" style={{ color: WHATSAPP_GREEN }} />
             <p className="text-sm text-muted-foreground">
-              Tambien puedes{" "}
+              También puedes{" "}
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
@@ -150,15 +150,15 @@ export default function VerificarPage() {
         {result && !isLoading && (
           <div>
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-success">
-              Analisis completado
+              Análisis completado
             </p>
             <AnalysisDisplay result={result} />
 
             <div className="mt-8 border-t-4 border-border bg-card p-6">
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Este analisis usa texto constitucional y marcos institucionales. Todas las fuentes son inspeccionables.{" "}
+                Este análisis se basa en el texto constitucional y en los marcos institucionales vigentes. Todas las fuentes son inspeccionables.{" "}
                 <span className="font-bold text-foreground">
-                  Carta no reemplaza asesoria legal.
+                  Carta no reemplaza la asesoría legal.
                 </span>
               </p>
             </div>
@@ -167,7 +167,7 @@ export default function VerificarPage() {
 
         <footer className="mt-12 border-t border-border pt-6">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-            Fuentes: Constitucion Politica de Colombia 1991 · Corte Constitucional
+            Fuentes: Constitución Política de Colombia 1991 · Corte Constitucional
           </p>
         </footer>
       </main>
