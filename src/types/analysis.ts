@@ -13,6 +13,17 @@ export type PlausibilityVerdict =
 
 export type ConfidenceLevel = "high" | "medium" | "low";
 
+export interface AnalysisMeta {
+  /** Stable ID for sharing/permalink. Optional — present when persistence succeeds. */
+  id?: string;
+  /** ISO timestamp of when the analysis was produced. */
+  createdAt?: string;
+  /** Model identifier that produced the analysis. */
+  model?: string;
+  /** Mean similarity score across the retrieved evidence (0..1). */
+  retrievalQuality?: number;
+}
+
 export interface AnalysisResult {
   claim: string;
   constitutionalPlausibility: PlausibilityVerdict;
@@ -22,4 +33,5 @@ export interface AnalysisResult {
   manipulationSignals: string[];
   confidence: ConfidenceLevel;
   sources: ConstitutionalSource[];
+  meta?: AnalysisMeta;
 }

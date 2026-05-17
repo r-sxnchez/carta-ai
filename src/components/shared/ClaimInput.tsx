@@ -13,10 +13,12 @@ const EXAMPLES = [
 interface ClaimInputProps {
   onSubmit: (claim: string) => void;
   isLoading: boolean;
+  initialValue?: string;
+  hint?: string;
 }
 
-export function ClaimInput({ onSubmit, isLoading }: ClaimInputProps) {
-  const [claim, setClaim] = useState("");
+export function ClaimInput({ onSubmit, isLoading, initialValue, hint }: ClaimInputProps) {
+  const [claim, setClaim] = useState(initialValue ?? "");
   const trimmed = claim.trim();
   const canSubmit = trimmed.length > 0 && !isLoading;
 
@@ -32,6 +34,11 @@ export function ClaimInput({ onSubmit, isLoading }: ClaimInputProps) {
       <p className="mt-2 text-sm text-muted-foreground">
         Mensaje de WhatsApp, tweet, propuesta de gobierno o cualquier texto que quieras verificar.
       </p>
+      {hint && (
+        <p className="mt-3 border-l-2 border-primary bg-primary/5 px-3 py-2 text-xs text-foreground">
+          {hint}
+        </p>
+      )}
 
       <textarea
         id="claim-input"

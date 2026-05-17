@@ -5,7 +5,7 @@ import { WHATSAPP_URL } from "@/lib/constants";
 
 const FOOTER_LINKS = [
   { label: "Verificar", href: "/verificar" },
-  { label: "Como funciona", href: "#" },
+  { label: "Cómo funciona", href: "#" },
   { label: "Contacto", href: "#" },
 ];
 
@@ -29,28 +29,28 @@ export function CtaFooter() {
             <span className="italic text-white/50">Verifica primero.</span>
           </h2>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-white/70 lg:text-lg">
-            La proxima vez que te llegue algo sospechoso, no lo reenvies.
-            Mandanoslo a nosotros. Te decimos si tiene sustento constitucional o no.
+            La próxima vez que te llegue algo sospechoso, no lo reenvíes.
+            Mándanoslo a nosotros. Te decimos si tiene sustento constitucional o no.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <Link
-              href="/verificar"
-              className="group inline-flex items-center justify-center gap-2 bg-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-primary transition-all hover:-translate-y-0.5"
-            >
-              Verificar en la web
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-2 border-2 border-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-white transition-colors hover:bg-white hover:text-primary"
+              className="group inline-flex items-center justify-center gap-2 bg-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-primary transition-all hover:-translate-y-0.5"
             >
               <MessageCircle className="h-4 w-4" />
-              Escribenos al WhatsApp
+              Escríbenos al WhatsApp
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
+
+            <Link
+              href="/verificar"
+              className="group inline-flex items-center justify-center gap-2 border-2 border-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-white transition-colors hover:bg-white hover:text-primary"
+            >
+              Verificar en la web
+            </Link>
           </div>
         </div>
 

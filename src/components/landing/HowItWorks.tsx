@@ -1,18 +1,18 @@
 const STEPS = [
   {
     number: "01",
-    title: "Pegalo",
+    title: "Pégalo",
     description: "Copia el mensaje, el tweet, la noticia. Lo que sea que quieras verificar.",
   },
   {
     number: "02",
     title: "Carta lo analiza",
-    description: "Buscamos en la Constitucion los articulos relevantes. Automaticamente. En segundos.",
+    description: "Buscamos en la Constitución los artículos relevantes. Automáticamente. En segundos.",
   },
   {
     number: "03",
-    title: "Tu decides",
-    description: "Te mostramos la evidencia con las fuentes. Sin opiniones. Tu sacas tus conclusiones.",
+    title: "Tú decides",
+    description: "Te mostramos la evidencia con las fuentes. Sin opiniones. Tú sacas tus conclusiones.",
   },
 ];
 
@@ -22,7 +22,7 @@ export function HowItWorks() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-14 max-w-2xl">
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold">
-            Asi de facil
+            Así de fácil
           </p>
           <h2 className="mt-4 font-serif text-3xl font-bold leading-[1.15] tracking-tight sm:text-4xl lg:text-5xl">
             Tres pasos.{" "}

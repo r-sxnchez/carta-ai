@@ -2,14 +2,14 @@ const PAIN_POINTS = [
   {
     num: "01",
     title: "No tienes tiempo",
-    text: "Tienes trabajo, familia, vida. No puedes pasarte horas investigando cada afirmacion que te llega.",
+    text: "Tienes trabajo, familia, vida. No puedes pasarte horas investigando cada afirmación que te llega.",
     border: "border-primary",
     label: "text-primary",
   },
   {
     num: "02",
-    title: "No sabes en quien confiar",
-    text: "Los medios tienen agenda. Los politicos mienten. Las redes amplifican lo falso. A quien le crees?",
+    title: "No sabes en quién confiar",
+    text: "Los medios tienen agenda. Los políticos mienten. Las redes amplifican lo falso. ¿A quién le crees?",
     border: "border-destructive",
     label: "text-destructive",
   },
@@ -31,12 +31,12 @@ export function Problem() {
             El problema real
           </p>
           <h2 className="mt-4 font-serif text-3xl font-bold leading-[1.15] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            Estas cansado de no saber{" "}
+            Estás cansado de no saber{" "}
             <span className="italic text-primary">qué es verdad.</span>
           </h2>
           <p className="mt-6 text-base leading-relaxed text-muted-foreground lg:text-lg">
-            Cada dia te llegan mensajes, tweets, noticias. Todos dicen cosas diferentes.
-            Todos dicen tener la razon. Y tu no tienes tiempo de leer 391 articulos de la Constitucion para verificar.
+            Cada día te llegan mensajes, tweets, noticias. Todos dicen cosas diferentes.
+            Todos dicen tener la razón. Y tú no tienes tiempo de leer 391 artículos de la Constitución para verificar.
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export function Problem() {
         <div className="mt-16 flex items-center gap-4">
           <div className="h-px flex-1 bg-border" />
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-            La solucion
+            La solución
           </span>
           <div className="h-px flex-1 bg-border" />
         </div>

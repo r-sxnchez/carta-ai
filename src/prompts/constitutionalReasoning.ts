@@ -91,17 +91,17 @@ Estructura exacta:
 
 {
   "constitutionalPlausibility": "<plausible|implausible|uncertain|context_dependent>",
-  "reasoning": "<2 a 4 oraciones de análisis institucional, en español, fundamentadas en el contexto>",
+  "reasoning": "<2 a 3 párrafos cortos separados por doble salto de línea (\\n\\n)>",
   "institutionalConstraints": ["<restricción 1 en español>", "<restricción 2 en español>"],
   "constitutionalArticles": ["<p. ej. Artículo 114>", "<p. ej. Artículo 189>"],
-  "manipulationSignals": ["<frase corta en español que describa la señal detectada, o arreglo vacío si no hay>"],
+  "manipulationSignals": ["<etiqueta corta de 2 a 5 palabras, sin punto>"],
   "confidence": "<high|medium|low>"
 }
 
 Guía de cada campo:
-- reasoning: explica la lógica constitucional en lenguaje cívico claro y en español. Referencia números de artículo solo si aparecen en el contexto.
-- institutionalConstraints: lista, en español, las limitaciones constitucionales específicas que aplican a la acción descrita.
+- reasoning: explica la lógica constitucional en lenguaje cívico claro y en español. Divide el razonamiento en 2 o 3 párrafos cortos separados por una línea en blanco (\\n\\n). Cada párrafo desarrolla una idea: por ejemplo, párrafo 1 = qué dice la Constitución, párrafo 2 = competencia institucional, párrafo 3 = matices o contexto. Referencia números de artículo solo si aparecen en el contexto.
+- institutionalConstraints: lista, en español, las limitaciones constitucionales específicas que aplican a la acción descrita. Frases cortas, declarativas.
 - constitutionalArticles: lista solo los identificadores de artículos presentes en la evidencia provista (formato "Artículo N").
-- manipulationSignals: cada elemento debe ser una frase completa en español describiendo la señal (por ejemplo: "Uso de lenguaje alarmista para evitar el análisis crítico"). Arreglo vacío si no hay señales.
+- manipulationSignals: ETIQUETAS CORTAS de 2 a 5 palabras describiendo la señal detectada en cómo está formulada la afirmación. Ejemplos válidos: "Lenguaje alarmista", "Falso dilema", "Simplificación excesiva", "Distorsión de competencias", "Certeza injustificada", "Apelación al miedo". NUNCA frases largas ni explicaciones. NUNCA termines con punto. Arreglo vacío si no hay señales.
 - confidence: "high" si hay evidencia constitucional sólida, "medium" si es parcial, "low" si el contexto es insuficiente.
 `.trim();

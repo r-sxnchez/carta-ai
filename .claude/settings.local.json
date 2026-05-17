@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(netstat -ano)",
+      "Bash(gh issue *)",
+      "WebSearch",
+      "WebFetch(domain:www.zavu.dev)",
+      "WebFetch(domain:docs.zavu.dev)",
+      "Bash(npm install *)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "context7"
+  ]
 }

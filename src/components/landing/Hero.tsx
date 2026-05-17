@@ -15,15 +15,15 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-28 sm:px-6 sm:pt-32 lg:pt-40">
         <span className="inline-block border border-white/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">
-          Verificacion Constitucional
+          Verificación Constitucional
         </span>
 
         <div className="mt-6 max-w-4xl">
           <h1 className="font-serif text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Te estan mintiendo.
+            Te están mintiendo.
           </h1>
           <h1 className="mt-2 font-serif text-4xl font-bold leading-[1.08] tracking-tight text-white/50 sm:text-5xl md:text-6xl lg:text-7xl">
-            Y tu puedes
+            Y tú puedes
           </h1>
           <h1 className="font-serif text-4xl font-bold italic leading-[1.08] tracking-tight text-gold sm:text-5xl md:text-6xl lg:text-7xl">
             comprobarlo.
@@ -31,44 +31,48 @@ export function Hero() {
         </div>
 
         <p className="mt-8 max-w-lg text-base leading-relaxed text-white/75 sm:text-lg">
-          Ese mensaje de WhatsApp que te reenviaron, ese tweet del politico, esa noticia que suena rara...{" "}
-          <strong className="text-white">Verificalo con la Constitucion en 30 segundos.</strong>
+          Ese mensaje de WhatsApp que te reenviaron, ese tweet del político, esa noticia que suena rara…{" "}
+          <strong className="text-white">Verifícalo con la Constitución en 30 segundos.</strong>
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <Link
-            href="/verificar"
-            className="group inline-flex items-center justify-center gap-2 bg-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-primary transition-all hover:-translate-y-0.5 hover:shadow-lg"
-          >
-            Verificar en la web
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center justify-center gap-2 border-2 border-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-white transition-colors hover:bg-white hover:text-primary"
+            className="group inline-flex items-center justify-center gap-2 bg-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-primary transition-all hover:-translate-y-0.5 hover:shadow-lg"
           >
             <MessageCircle className="h-4 w-4" />
             Verificar por WhatsApp
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
+
+          <Link
+            href="/verificar"
+            className="group inline-flex items-center justify-center gap-2 border-2 border-white px-6 py-4 text-sm font-bold uppercase tracking-widest text-white transition-colors hover:bg-white hover:text-primary"
+          >
+            Verificar en la web
+          </Link>
         </div>
+
+        <p className="mt-4 max-w-md text-xs text-white/50">
+          Te abrimos WhatsApp con un mensaje listo para enviar. Sin formularios. Sin registros.
+        </p>
 
         <div className="mt-16 flex flex-wrap items-center gap-8 border-t border-white/10 pt-8">
           <div>
-            <div className="font-serif text-3xl font-bold">13,400+</div>
-            <div className="text-xs uppercase tracking-widest text-white/50">Verificaciones</div>
+            <div className="font-serif text-3xl font-bold">391</div>
+            <div className="text-xs uppercase tracking-widest text-white/50">Artículos en el corpus</div>
           </div>
           <div className="h-10 w-px bg-white/10" />
           <div>
-            <div className="font-serif text-3xl font-bold">391</div>
-            <div className="text-xs uppercase tracking-widest text-white/50">Articulos analizados</div>
+            <div className="font-serif text-3xl font-bold">1991</div>
+            <div className="text-xs uppercase tracking-widest text-white/50">Constitución vigente</div>
           </div>
           <div className="hidden h-10 w-px bg-white/10 sm:block" />
           <div className="hidden sm:block">
-            <div className="font-serif text-3xl font-bold">30s</div>
-            <div className="text-xs uppercase tracking-widest text-white/50">Tiempo promedio</div>
+            <div className="font-serif text-3xl font-bold">~30s</div>
+            <div className="text-xs uppercase tracking-widest text-white/50">Por análisis</div>
           </div>
         </div>
       </div>
