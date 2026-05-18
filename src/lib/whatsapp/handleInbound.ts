@@ -47,7 +47,7 @@ export async function handleInboundMessage(message: InboundMessage): Promise<voi
   const { from, messageType, text, content } = message;
 
   console.log("[wa/inbound]", {
-    id: message.id,
+    id: message.messageId,
     from,
     type: messageType,
     hasText: !!text,

@@ -1,11 +1,25 @@
-export type InboundMessageType = "text" | "image" | "audio" | "video" | "document" | "sticker" | "location" | "contact" | "buttons" | "list" | "reaction" | "template";
+export type InboundMessageType =
+  | "text"
+  | "image"
+  | "audio"
+  | "video"
+  | "document"
+  | "sticker"
+  | "location"
+  | "contact"
+  | "buttons"
+  | "list"
+  | "reaction"
+  | "template";
 
+/** Shape of `event.data` for an inbound WhatsApp message from Zavu. */
 export interface InboundMessage {
-  id: string;
+  messageId: string;
   from: string;
   to?: string;
   channel: string;
   messageType: InboundMessageType;
+  profileName?: string;
   text?: string;
   content?: {
     mediaUrl?: string;
@@ -15,11 +29,7 @@ export interface InboundMessage {
   };
 }
 
+/** Top-level webhook envelope. Zavu wraps the message in `data`. */
 export interface InboundEvent {
-  type: string;
-  message?: InboundMessage;
-}
-
-export function isInboundMessage(event: InboundEvent): event is InboundEvent & { message: InboundMessage } {
-  return event.type === "message.inbound" && !!event.message;
+  data?: InboundMessage;
 }
