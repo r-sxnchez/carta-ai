@@ -3,14 +3,34 @@ import crypto from "node:crypto";
 const TIMESTAMP_TOLERANCE_SECONDS = 300;
 
 /**
+ * Decode a Zavu webhook secret. Zavu uses the `whsec_<base64>` convention
+ * (same as Svix): the actual HMAC key is the base64-decoded body, not the
+ * string with the prefix.
+ */
+function deriveSecretKey(raw: string): { key: Buffer; mode: "decoded" | "literal" } {
+  if (raw.startsWith("whsec_")) {
+    const body = raw.slice("whsec_".length);
+    try {
+      return { key: Buffer.from(body, "base64"), mode: "decoded" };
+    } catch {
+      // Fall through to literal.
+    }
+  }
+  return { key: Buffer.from(raw, "utf8"), mode: "literal" };
+}
+
+function hmacHex(key: Buffer, payload: string): string {
+  return crypto.createHmac("sha256", key).update(payload).digest("hex");
+}
+
+/**
  * Verifies a Zavu webhook signature.
  *
  * Header format (Stripe-style, single header):
  *   X-Zavu-Signature: t=<unix_seconds>,v1=<hex_hmac_sha256>
  *
- * The signed payload is `${timestamp}.${rawBody}`.
- *
- * NOTE: diagnostic logs are currently always-on. Remove once verification is stable.
+ * Signed payload: `${timestamp}.${rawBody}`.
+ * Secret: `whsec_<base64>` — base64-decoded body is the HMAC key.
  */
 export function verifyZavuSignature(headers: Headers, rawBody: string): boolean {
   const secret = process.env.ZAVU_WEBHOOK_SECRET;
@@ -18,17 +38,6 @@ export function verifyZavuSignature(headers: Headers, rawBody: string): boolean 
     console.warn("[wa/sig] ZAVU_WEBHOOK_SECRET is not set");
     return false;
   }
-
-  const headerDump: Record<string, string> = {};
-  headers.forEach((value, key) => {
-    const lower = key.toLowerCase();
-    if (lower.startsWith("x-zavu") || lower.includes("signature")) {
-      headerDump[key] = value;
-    }
-  });
-  console.log("[wa/sig] zavu headers:", JSON.stringify(headerDump));
-  console.log("[wa/sig] secret head:", secret.slice(0, 6) + "…", "len:", secret.length);
-  console.log("[wa/sig] body len:", rawBody.length, "head:", rawBody.slice(0, 200));
 
   const header = headers.get("x-zavu-signature");
   if (!header) {
@@ -43,9 +52,6 @@ export function verifyZavuSignature(headers: Headers, rawBody: string): boolean 
     if (trimmed.startsWith("t=")) timestamp = trimmed.slice(2);
     else if (trimmed.startsWith("v1=")) signature = trimmed.slice(3);
   }
-
-  console.log("[wa/sig] parsed t:", timestamp, "v1 head:", signature?.slice(0, 12));
-
   if (!timestamp || !signature) {
     console.warn("[wa/sig] could not parse t=/v1= from header:", header);
     return false;
@@ -59,16 +65,25 @@ export function verifyZavuSignature(headers: Headers, rawBody: string): boolean 
     return false;
   }
 
-  const expected = crypto
-    .createHmac("sha256", secret)
-    .update(`${timestamp}.${rawBody}`)
-    .digest("hex");
+  const payload = `${timestamp}.${rawBody}`;
+  const derived = deriveSecretKey(secret);
 
-  console.log("[wa/sig] expected head:", expected.slice(0, 12), "received head:", signature.slice(0, 12));
-  console.log("[wa/sig] expected len:", expected.length, "received len:", signature.length);
+  const expected = hmacHex(derived.key, payload);
+  const literalExpected = hmacHex(Buffer.from(secret, "utf8"), payload);
 
-  const a = Buffer.from(expected, "utf8");
-  const b = Buffer.from(signature, "utf8");
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
+  console.log("[wa/sig] received:", signature.slice(0, 16));
+  console.log("[wa/sig] expected(decoded):", expected.slice(0, 16), "mode:", derived.mode);
+  console.log("[wa/sig] expected(literal):", literalExpected.slice(0, 16));
+
+  const recv = Buffer.from(signature, "utf8");
+  const want = Buffer.from(expected, "utf8");
+  if (recv.length === want.length && crypto.timingSafeEqual(recv, want)) return true;
+
+  const wantLit = Buffer.from(literalExpected, "utf8");
+  if (recv.length === wantLit.length && crypto.timingSafeEqual(recv, wantLit)) {
+    console.warn("[wa/sig] matched via LITERAL secret — Zavu is not using whsec_ base64 convention");
+    return true;
+  }
+
+  return false;
 }
