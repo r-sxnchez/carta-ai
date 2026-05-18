@@ -8,7 +8,7 @@ const VERDICT_HEADER: Record<PlausibilityVerdict, string> = {
   context_dependent: "⚖️ Esta afirmación omite restricciones constitucionales importantes.",
 };
 
-const MAX_SUMMARY_CHARS = 420;
+const MAX_SUMMARY_CHARS = 320;
 
 function fallbackSummary(reasoning: string): string {
   const cleaned = reasoning

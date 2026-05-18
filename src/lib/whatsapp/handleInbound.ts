@@ -1,7 +1,9 @@
-import { analyzeClaim } from "@/lib/ai/analyzeClaim";
 import { MAX_CLAIM_LENGTH } from "@/lib/constants";
 import { extractClaimFromImage } from "@/lib/multimodal";
-import { conversationalReply } from "./conversationGate";
+import { analyzeClaim } from "@/lib/ai/analyzeClaim";
+import { processTextMessage } from "./conversation/processText";
+import { appendTurn, setLastAnalysis } from "./context/store";
+import { analysisToContext } from "./context/types";
 import { formatForWhatsApp } from "./formatResponse";
 import type { InboundMessage } from "./inboundEvent";
 import {
@@ -36,7 +38,6 @@ async function reply(to: string, text: string): Promise<void> {
   }
 }
 
-/** Same pipeline as POST /api/analyze — shared analyzeClaim source of truth. */
 async function analyzeAndReply(to: string, claim: string): Promise<void> {
   const trimmed = claim.trim().slice(0, MAX_CLAIM_LENGTH);
   if (!trimmed) {
@@ -44,8 +45,13 @@ async function analyzeAndReply(to: string, claim: string): Promise<void> {
     return;
   }
 
+  appendTurn(to, { role: "user", text: `[imagen] ${trimmed}` });
+
   const result = await analyzeClaim(trimmed);
-  await reply(to, formatForWhatsApp(result, publicBaseUrl()));
+  const responseText = formatForWhatsApp(result, publicBaseUrl());
+  setLastAnalysis(to, analysisToContext(result));
+  appendTurn(to, { role: "assistant", text: responseText });
+  await reply(to, responseText);
 }
 
 export async function handleInboundMessage(message: InboundMessage): Promise<void> {
@@ -67,30 +73,32 @@ export async function handleInboundMessage(message: InboundMessage): Promise<voi
           return;
         }
 
-        const conversational = conversationalReply(text);
-        if (conversational) {
-          console.log("[wa/conversation]", { route: "guide", preview: text.slice(0, 60) });
-          await reply(from, conversational);
-          return;
-        }
-
-        console.log("[wa/analyze]", { preview: text.slice(0, 80) });
-        await analyzeAndReply(from, text);
+        const response = await processTextMessage(from, text);
+        await reply(from, response);
         return;
       }
 
       case "image": {
         const mediaUrl = content?.mediaUrl;
         if (!mediaUrl) {
-          await reply(from, "Recibí una imagen pero no pude descargarla. Intenta de nuevo en un momento.");
+          await reply(
+            from,
+            "Recibí una imagen pero no pude descargarla. Intenta de nuevo en un momento."
+          );
           return;
         }
+
         const dataUrl = await fetchMediaAsDataUrl(mediaUrl);
         const extracted = await extractClaimFromImage(dataUrl);
+
         if (extracted.noClaimFound || !extracted.claim) {
-          await reply(from, guideReply("image"));
+          appendTurn(from, { role: "user", text: "[imagen]" });
+          const msg = guideReply("image");
+          appendTurn(from, { role: "assistant", text: msg });
+          await reply(from, msg);
           return;
         }
+
         await analyzeAndReply(from, extracted.claim);
         return;
       }

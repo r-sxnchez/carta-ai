@@ -28,7 +28,7 @@ export interface AnalysisResult {
   claim: string;
   constitutionalPlausibility: PlausibilityVerdict;
   reasoning: string;
-  /** 2-3 sentence conversational summary in warm LATAM professor tone, optimized for WhatsApp. */
+  /** Brief institutional summary optimized for WhatsApp. */
   whatsappSummary?: string;
   institutionalConstraints: string[];
   constitutionalArticles: string[];
