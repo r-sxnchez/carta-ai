@@ -30,6 +30,7 @@ function buildConstitutionalContext(
 interface LLMOutput {
   constitutionalPlausibility: AnalysisResult["constitutionalPlausibility"];
   reasoning: string;
+  whatsappSummary?: string;
   institutionalConstraints: string[];
   constitutionalArticles: string[];
   manipulationSignals: string[];
@@ -107,6 +108,7 @@ ${constitutionalContext}
     claim,
     constitutionalPlausibility: parsed.constitutionalPlausibility,
     reasoning: parsed.reasoning,
+    whatsappSummary: parsed.whatsappSummary?.trim() || undefined,
     institutionalConstraints: parsed.institutionalConstraints ?? [],
     constitutionalArticles: parsed.constitutionalArticles ?? [],
     manipulationSignals: parsed.manipulationSignals ?? [],

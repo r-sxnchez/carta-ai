@@ -1,14 +1,18 @@
 import { analyzeClaim } from "@/lib/ai/analyzeClaim";
-import { extractClaimFromImage } from "@/lib/multimodal";
 import { MAX_CLAIM_LENGTH } from "@/lib/constants";
+import { extractClaimFromImage } from "@/lib/multimodal";
+import { conversationalReply } from "./conversationGate";
 import { formatForWhatsApp } from "./formatResponse";
 import type { InboundMessage } from "./inboundEvent";
+import {
+  analysisErrorReply,
+  guideReply,
+  unsupportedMediaReply,
+} from "./replies";
 import { sendWhatsAppText } from "./zavu";
 
-const FALLBACK_PUBLIC_URL = "";
-
 function publicBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_CARTA_URL ?? FALLBACK_PUBLIC_URL;
+  return (process.env.NEXT_PUBLIC_CARTA_URL ?? "").trim();
 }
 
 async function fetchMediaAsDataUrl(mediaUrl: string): Promise<string> {
@@ -32,10 +36,11 @@ async function reply(to: string, text: string): Promise<void> {
   }
 }
 
+/** Same pipeline as POST /api/analyze — shared analyzeClaim source of truth. */
 async function analyzeAndReply(to: string, claim: string): Promise<void> {
   const trimmed = claim.trim().slice(0, MAX_CLAIM_LENGTH);
   if (!trimmed) {
-    await reply(to, "No detecté una afirmación clara para verificar. Envíame el texto o una captura de la afirmación.");
+    await reply(to, guideReply("empty"));
     return;
   }
 
@@ -57,10 +62,19 @@ export async function handleInboundMessage(message: InboundMessage): Promise<voi
   try {
     switch (messageType) {
       case "text": {
-        if (!text || !text.trim()) {
-          await reply(from, "Recibí tu mensaje pero está vacío. Envíame la afirmación que quieres verificar.");
+        if (!text?.trim()) {
+          await reply(from, guideReply("empty"));
           return;
         }
+
+        const conversational = conversationalReply(text);
+        if (conversational) {
+          console.log("[wa/conversation]", { route: "guide", preview: text.slice(0, 60) });
+          await reply(from, conversational);
+          return;
+        }
+
+        console.log("[wa/analyze]", { preview: text.slice(0, 80) });
         await analyzeAndReply(from, text);
         return;
       }
@@ -74,10 +88,7 @@ export async function handleInboundMessage(message: InboundMessage): Promise<voi
         const dataUrl = await fetchMediaAsDataUrl(mediaUrl);
         const extracted = await extractClaimFromImage(dataUrl);
         if (extracted.noClaimFound || !extracted.claim) {
-          await reply(
-            from,
-            "No identifiqué una afirmación política verificable en esa imagen. Envíame el texto o una captura más clara."
-          );
+          await reply(from, guideReply("image"));
           return;
         }
         await analyzeAndReply(from, extracted.claim);
@@ -85,23 +96,17 @@ export async function handleInboundMessage(message: InboundMessage): Promise<voi
       }
 
       case "audio": {
-        await reply(
-          from,
-          "Por ahora solo proceso texto e imágenes. La verificación por audio llegará pronto."
-        );
+        await reply(from, unsupportedMediaReply("audio"));
         return;
       }
 
       default: {
-        await reply(
-          from,
-          "Solo entiendo texto e imágenes por ahora. Envíame la afirmación que quieres verificar."
-        );
+        await reply(from, unsupportedMediaReply("other"));
         return;
       }
     }
   } catch (err) {
     console.error("[wa/handle] failed:", err);
-    await reply(from, "Algo falló de nuestro lado al verificar. Intenta de nuevo en un momento.");
+    await reply(from, analysisErrorReply());
   }
 }
